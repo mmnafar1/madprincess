@@ -1,0 +1,298 @@
+[gd_scene load_steps=11 format=3 uid="uid://dcseeo4edb124"]
+
+[ext_resource type="Script" uid="uid://cyx3egm4xdjgy" path="res://texture_rect.gd" id="2_fu7sn"]
+[ext_resource type="Script" uid="uid://dd7x6lvepgnwa" path="res://main_page.gd" id="2_glbon"]
+[ext_resource type="Texture2D" uid="uid://cijjqdxi77gkv" path="res://Assets/Infopanel-Standard-1000-Grundskylt.jpg" id="2_nlkkf"]
+[ext_resource type="Script" uid="uid://cydrr8m8e2kkr" path="res://option_page.gd" id="4_jix8l"]
+[ext_resource type="Script" uid="uid://o1vtsqe24u6m" path="res://game.gd" id="5_glbon"]
+[ext_resource type="PackedScene" uid="uid://bioh23pq4uiaj" path="res://player.tscn" id="6_nlkkf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fu7sn"]
+bg_color = Color(3.65794e-06, 0.697835, 0.599881, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(8.27849e-06, 0.918432, 0.874235, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_fu7sn"]
+color = Color(1, 1, 1, 1)
+thickness = 8
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_jix8l"]
+color = Color(6.61798e-07, 0.276431, 0.297223, 1)
+thickness = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jix8l"]
+bg_color = Color(0.864184, 0.460896, 0.503466, 1)
+border_width_left = 80
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0.929412, 0.788235, 0)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+expand_margin_left = 80.0
+expand_margin_top = 8.0
+expand_margin_bottom = 8.0
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainPage" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_glbon")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainPage"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 390.0
+offset_top = 324.0
+offset_right = 729.0
+offset_bottom = 580.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="Start" type="Button" parent="MainPage/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Start"
+
+[node name="Option" type="Button" parent="MainPage/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Options"
+
+[node name="Info" type="Button" parent="MainPage/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Info"
+
+[node name="Quit" type="Button" parent="MainPage/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Quit"
+
+[node name="InfoPannel" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_nlkkf")
+script = ExtResource("2_fu7sn")
+
+[node name="Infopanel-standard-1000-grundskylt" type="Sprite2D" parent="InfoPannel"]
+position = Vector2(574, 322)
+scale = Vector2(1.43925, 1.20989)
+
+[node name="Label" type="Label" parent="InfoPannel"]
+layout_mode = 0
+offset_left = 559.0
+offset_top = 125.0
+offset_right = 599.0
+offset_bottom = 148.0
+text = "Info:"
+
+[node name="Label2" type="Label" parent="InfoPannel"]
+layout_mode = 0
+offset_left = 445.0
+offset_top = 213.0
+offset_right = 714.0
+offset_bottom = 236.0
+scale = Vector2(1.23183, 2.47654)
+text = "oh yeah we have info here oh yeah"
+
+[node name="Button" type="Button" parent="InfoPannel"]
+layout_mode = 0
+offset_left = 445.0
+offset_top = 413.0
+offset_right = 770.0
+offset_bottom = 537.0
+text = "go back to where you came from"
+
+[node name="OptionPage" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_jix8l")
+
+[node name="Label" type="Label" parent="OptionPage"]
+layout_mode = 0
+offset_left = 459.0
+offset_top = 61.0
+offset_right = 650.0
+offset_bottom = 110.0
+text = "Choose your champion...
+i mean settings"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OptionPage"]
+layout_mode = 0
+offset_left = 422.0
+offset_top = 133.0
+offset_right = 691.0
+offset_bottom = 564.0
+
+[node name="PanelContainer" type="PanelContainer" parent="OptionPage/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fu7sn")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionPage/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="OptionPage/VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="OptionPage/VBoxContainer/PanelContainer/HBoxContainer"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.35
+text = "Volume"
+
+[node name="HSlider2" type="HSlider" parent="OptionPage/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/slider = SubResource("StyleBoxLine_fu7sn")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_jix8l")
+value = 50.0
+
+[node name="PanelContainer4" type="PanelContainer" parent="OptionPage/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fu7sn")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionPage/VBoxContainer/PanelContainer4"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="OptionPage/VBoxContainer/PanelContainer4/HBoxContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="OptionPage/VBoxContainer/PanelContainer4/HBoxContainer"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.35
+text = "Volume"
+
+[node name="HSlider2" type="HSlider" parent="OptionPage/VBoxContainer/PanelContainer4/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/slider = SubResource("StyleBoxLine_fu7sn")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_jix8l")
+value = 50.0
+
+[node name="PanelContainer5" type="PanelContainer" parent="OptionPage/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fu7sn")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionPage/VBoxContainer/PanelContainer5"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="OptionPage/VBoxContainer/PanelContainer5/HBoxContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="OptionPage/VBoxContainer/PanelContainer5/HBoxContainer"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.35
+text = "Volume"
+
+[node name="HSlider2" type="HSlider" parent="OptionPage/VBoxContainer/PanelContainer5/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/slider = SubResource("StyleBoxLine_fu7sn")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_jix8l")
+value = 50.0
+
+[node name="PanelContainer2" type="PanelContainer" parent="OptionPage/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fu7sn")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionPage/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="OptionPage/VBoxContainer/PanelContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="OptionPage/VBoxContainer/PanelContainer2/HBoxContainer"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.35
+text = "Full?"
+
+[node name="CheckButton" type="CheckButton" parent="OptionPage/VBoxContainer/PanelContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelContainer3" type="PanelContainer" parent="OptionPage/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fu7sn")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionPage/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="OptionPage/VBoxContainer/PanelContainer3/HBoxContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="OptionPage/VBoxContainer/PanelContainer3/HBoxContainer"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.35
+text = "Volume"
+
+[node name="HSlider" type="HSlider" parent="OptionPage/VBoxContainer/PanelContainer3/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/slider = SubResource("StyleBoxFlat_jix8l")
+rounded = true
+
+[node name="Button" type="Button" parent="OptionPage"]
+layout_mode = 0
+offset_left = 502.0
+offset_top = 329.0
+offset_right = 603.0
+offset_bottom = 373.0
+text = "Biok"
+
+[node name="Game" type="Node2D" parent="."]
+visible = false
+script = ExtResource("5_glbon")
+
+[node name="Node2D" parent="Game" instance=ExtResource("6_nlkkf")]
+z_index = 22
+position = Vector2(436, 314)
+scale = Vector2(2, 2)
+
+[connection signal="pressed" from="MainPage/VBoxContainer/Start" to="MainPage" method="_on_start_pressed"]
+[connection signal="pressed" from="MainPage/VBoxContainer/Option" to="MainPage" method="_on_option_pressed"]
+[connection signal="pressed" from="MainPage/VBoxContainer/Info" to="MainPage" method="_on_info_pressed"]
+[connection signal="pressed" from="MainPage/VBoxContainer/Quit" to="MainPage" method="_on_quit_pressed"]
+[connection signal="pressed" from="InfoPannel/Button" to="InfoPannel" method="_on_button_pressed"]
+[connection signal="pressed" from="OptionPage/Button" to="OptionPage" method="_on_button_pressed"]
