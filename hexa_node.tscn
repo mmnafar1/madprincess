@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqeiiprqlqp7y"]
+[gd_scene load_steps=4 format=3 uid="uid://cqeiiprqlqp7y"]
 
-[ext_resource type="Texture2D" path="res://hex_war.png" id="1_evyx2"]
 [ext_resource type="Script" uid="uid://cjtc0sxygc4sd" path="res://hexa_node.gd" id="1_omndm"]
-[ext_resource type="Texture2D" path="res://meme.png" id="2_2ows4"]
-[ext_resource type="Texture2D" path="res://2.png" id="3_30qxo"]
+[ext_resource type="Texture2D" uid="uid://cvt0tfsjd1pe7" path="res://meme.png" id="2_2ows4"]
+[ext_resource type="Texture2D" uid="uid://5734j5x0gh8p" path="res://Assets/2.png" id="3_30qxo"]
 
 [node name="HexaNode" type="Node2D"]
 script = ExtResource("1_omndm")
@@ -12,7 +11,6 @@ script = ExtResource("1_omndm")
 
 [node name="HexWar" type="Sprite2D" parent="Area2D"]
 visible = false
-texture = ExtResource("1_evyx2")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
 polygon = PackedVector2Array(0, -128, 128, -63, 128, 67, 0, 131, -128, 67, -127, -65)
@@ -29,25 +27,21 @@ texture = ExtResource("3_30qxo")
 [node name="s3" type="Sprite2D" parent="Area2D"]
 visible = false
 position = Vector2(193, 15)
-texture = ExtResource("3_30qxo")
 
 [node name="s5" type="Sprite2D" parent="Area2D"]
 visible = false
 z_index = 1
 position = Vector2(73, 100)
-texture = ExtResource("3_30qxo")
 
 [node name="s6" type="Sprite2D" parent="Area2D"]
 visible = false
 z_index = 1
 position = Vector2(265, 114)
-texture = ExtResource("3_30qxo")
 
 [node name="s7" type="Sprite2D" parent="Area2D"]
 visible = false
 z_index = -5
 position = Vector2(122, -85)
-texture = ExtResource("3_30qxo")
 
 [node name="Label" type="Label" parent="."]
 visible = false

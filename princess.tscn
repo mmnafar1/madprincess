@@ -1,0 +1,94 @@
+[gd_scene load_steps=8 format=3 uid="uid://mn7l76g3mkbv"]
+
+[ext_resource type="Texture2D" uid="uid://rcwjeh3ilp47" path="res://Assets/characters.png" id="1_mlurr"]
+
+[sub_resource type="GDScript" id="GDScript_mlurr"]
+script/source = "extends CharacterBody2D
+
+const SPEED := 300.0
+const DEADZONE := 0.05  # tiny threshold to prevent jitter at near-zero input
+
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+
+# Order corresponds to angle sectors starting at +X (right) going CCW
+var _dir_names := [
+	\"E\",
+	\"NE\",
+	\"N\",
+	\"NW\",
+	\"W\",
+	\"SW\",
+	\"S\",
+	\"SE\"
+]
+
+var _last_dir_idx := 0  # remember where we were facing when we stop
+
+func _physics_process(delta: float) -> void:
+	#mood = 'idle'
+
+	## --- movement (yours, slightly kept) ---
+	#if direction.length() > DEADZONE:
+		#velocity = direction * SPEED
+	#else:
+		#velocity.x = move_toward(velocity.x, 0.0, SPEED)
+		#velocity.y = move_toward(velocity.y, 0.0, SPEED)
+#
+	#move_and_slide()
+	_update_animation('normal')
+
+func _update_animation(mode: String) -> void:
+	var idle_name = \"Idle_\" + mode
+	_play_once(idle_name)
+
+func _play_once(target: String) -> void:
+	if anim.animation != target:
+		anim.play(target)
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0pwim"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xtddm"]
+atlas = ExtResource("1_mlurr")
+region = Rect2(64, 144, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y80dd"]
+atlas = ExtResource("1_mlurr")
+region = Rect2(64, 120, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wholh"]
+atlas = ExtResource("1_mlurr")
+region = Rect2(64, 168, 16, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mlurr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xtddm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y80dd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xtddm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wholh")
+}],
+"loop": true,
+"name": &"Idle_normal",
+"speed": 4.0
+}]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+slide_on_ceiling = false
+script = SubResource("GDScript_mlurr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("CircleShape2D_0pwim")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+sprite_frames = SubResource("SpriteFrames_mlurr")
+animation = &"Idle_normal"

@@ -1,5 +1,9 @@
 extends Node2D
 
+@export var r: int
+@export var q: int
+@export var s: int
+
 func _ready():
 	var img = Image.new()
 	var err = img.load("res://Assets/tiles/"+str(randi_range(2, 2))+".png")
