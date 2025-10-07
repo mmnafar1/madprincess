@@ -34,7 +34,7 @@ func _physics_process(delta: float) -> void:
 		#velocity.x = move_toward(velocity.x, 0.0, SPEED)
 		#velocity.y = move_toward(velocity.y, 0.0, SPEED)
 #
-	#move_and_slide()
+	move_and_slide()
 	_update_animation('normal')
 
 func _update_animation(mode: String) -> void:
@@ -45,8 +45,6 @@ func _play_once(target: String) -> void:
 	if anim.animation != target:
 		anim.play(target)
 "
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_0pwim"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xtddm"]
 atlas = ExtResource("1_mlurr")
@@ -80,15 +78,17 @@ animations = [{
 "speed": 4.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_0pwim"]
+
 [node name="Node2D" type="Node2D"]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-slide_on_ceiling = false
+platform_floor_layers = 4294967055
 script = SubResource("GDScript_mlurr")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-shape = SubResource("CircleShape2D_0pwim")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
 sprite_frames = SubResource("SpriteFrames_mlurr")
 animation = &"Idle_normal"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("CircleShape2D_0pwim")

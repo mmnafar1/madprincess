@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://dcseeo4edb124"]
+[gd_scene load_steps=20 format=4 uid="uid://dcseeo4edb124"]
 
 [ext_resource type="Script" uid="uid://cyx3egm4xdjgy" path="res://texture_rect.gd" id="2_fu7sn"]
 [ext_resource type="Script" uid="uid://dd7x6lvepgnwa" path="res://main_page.gd" id="2_glbon"]
@@ -6,7 +6,9 @@
 [ext_resource type="Script" uid="uid://cydrr8m8e2kkr" path="res://option_page.gd" id="4_jix8l"]
 [ext_resource type="Script" uid="uid://o1vtsqe24u6m" path="res://game.gd" id="5_glbon"]
 [ext_resource type="PackedScene" uid="uid://bioh23pq4uiaj" path="res://player.tscn" id="6_nlkkf"]
+[ext_resource type="PackedScene" uid="uid://dtyqo124jqlfh" path="res://Monster.tscn" id="7_0o4t1"]
 [ext_resource type="Texture2D" uid="uid://dgj6oelmjt43m" path="res://Assets/hextilesorganized 8x.png" id="7_dy7ct"]
+[ext_resource type="PackedScene" uid="uid://cajm637sgyp4" path="res://Chocolate.tscn" id="8_0k4wn"]
 [ext_resource type="Texture2D" uid="uid://5734j5x0gh8p" path="res://Assets/2.png" id="8_0o4t1"]
 [ext_resource type="Texture2D" uid="uid://p0u7utpfh50c" path="res://Assets/meme.png" id="9_0k4wn"]
 
@@ -324,6 +326,12 @@ script = ExtResource("5_glbon")
 z_index = 22
 position = Vector2(436, 314)
 scale = Vector2(2, 2)
+
+[node name="Node2D" parent="Game" instance=ExtResource("7_0o4t1")]
+position = Vector2(918, 121)
+
+[node name="Node2D2" parent="Game" instance=ExtResource("8_0k4wn")]
+position = Vector2(322, 148)
 
 [node name="TestMap" type="Node2D" parent="."]
 visible = false

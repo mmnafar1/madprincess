@@ -1,8 +1,8 @@
 extends Node2D
 
-@export var r: int
-@export var q: int
-@export var s: int
+var r: int
+var q: int
+var s: int
 
 func _ready():
 	var img = Image.new()

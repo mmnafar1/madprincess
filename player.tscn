@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bioh23pq4uiaj"]
+[gd_scene load_steps=29 format=3 uid="uid://bioh23pq4uiaj"]
 
 [ext_resource type="Texture2D" uid="uid://rcwjeh3ilp47" path="res://Assets/characters.png" id="1_4flbx"]
 
@@ -6,11 +6,10 @@
 resource_name = "main_player"
 script/source = "extends CharacterBody2D
 
-const SPEED := 300.0
-const DEADZONE := 0.05  # tiny threshold to prevent jitter at near-zero input
+
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
-
+var chocos = 0
 # Order corresponds to angle sectors starting at +X (right) going CCW
 var _dir_names := [
 	\"E\",
@@ -29,24 +28,24 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_vector(\"left\", \"right\", \"up\", \"down\")
 
 	# --- movement (yours, slightly kept) ---
-	if direction.length() > DEADZONE:
-		velocity = direction * SPEED
+	if direction.length() > Config.DEADZONE:
+		velocity = direction * Config.SPEED
 	else:
-		velocity.x = move_toward(velocity.x, 0.0, SPEED)
-		velocity.y = move_toward(velocity.y, 0.0, SPEED)
+		velocity.x = move_toward(velocity.x, 0.0, Config.SPEED)
+		velocity.y = move_toward(velocity.y, 0.0, Config.SPEED)
 
 	move_and_slide()
 	_update_animation(direction)
 
 func _update_animation(direction: Vector2) -> void:
-	if direction.length() > DEADZONE:
+	if direction.length() > Config.DEADZONE:
 		# Convert to angle [0..2π) and quantize into 8 sectors
 		var angle := atan2(-direction.y, direction.x)  # screen Y+ is down; negate to make up positive
 		if angle < 0.0:
 			angle += TAU
 		var sector := int(roundi(angle / (PI / 4.0))) % 8
 		_last_dir_idx = sector
-		print(sector)
+		#print(sector)
 		var name = _dir_names[sector]
 		_play_once(\"Walk_\" + name)
 	else:
@@ -56,6 +55,18 @@ func _update_animation(direction: Vector2) -> void:
 func _play_once(target: String) -> void:
 	if anim.animation != target:
 		anim.play(target)
+
+func _player_ate():
+	chocos += 1
+	print(\"player Has Chocolate: \",chocos)
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	print(body)
+	if body.is_in_group('monster'):
+		body._is_killed()
+	if body.is_in_group('item'):
+		_player_ate()
+		body.get_parent().queue_free()
 "
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i3pqv"]
@@ -339,6 +350,9 @@ animations = [{
 "speed": 11.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_4flbx"]
+radius = 10.0499
+
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" type="CharacterBody2D" parent="."]
@@ -348,5 +362,10 @@ script = SubResource("GDScript_onrkg")
 sprite_frames = SubResource("SpriteFrames_bwjto")
 animation = &"Idle_W"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Player"]
-polygon = PackedVector2Array(5, -5, 1, 12, -6, -6)
+[node name="Area2D" type="Area2D" parent="Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
+position = Vector2(-1, 2)
+shape = SubResource("CircleShape2D_4flbx")
+
+[connection signal="body_entered" from="Player/Area2D" to="Player" method="_on_area_2d_body_entered"]

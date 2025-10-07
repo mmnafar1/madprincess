@@ -1,10 +1,8 @@
 extends Node2D
 
-@export var hexa_scene: PackedScene
-const HEX_SIZE = Vector2(25.6*2+3, 25.6*2+36)
-const COLS = 12
-const ROWS = 10
-var tiles = []
+var hexa_scene: PackedScene
+#const HEX_SIZE = Vector2(25.6*2+3, 25.6*2+36)
+
 
 func _put_da_tiles():
 	#STARTO PUT THE TILES HERE
@@ -13,11 +11,10 @@ func _put_da_tiles():
 	if hexa_scene == null:
 		push_error("hexa_scene not assigned!")
 		return
-	var radius = 6
 	var o = 0
-	for r in range(0-radius,radius+1):
-		for q in range(0-radius,radius+1):
-			for s in range(0-radius,radius+1):
+	for r in range(0-Config.radius,Config.radius+1):
+		for q in range(0-Config.radius,Config.radius+1):
+			for s in range(0-Config.radius,Config.radius+1):
 				if(r+q+s !=0):
 					continue
 				o+=1
@@ -35,7 +32,7 @@ func _put_da_tiles():
 				if(r==1 and q ==-1 and s==0):
 					print((q-s)/2)
 				hexa_instance.position = pos
-				tiles.append(hexa_instance)
+				Config.tiles.append(hexa_instance)
 				add_child(hexa_instance)
 func _put_da_princess():
 	var start = get_viewport_rect().size/2

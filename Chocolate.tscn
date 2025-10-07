@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cajm637sgyp4"]
+
+[ext_resource type="Texture2D" uid="uid://bu6lxk5sgfmg6" path="res://Assets/popsicle_BV6.png" id="1_7rjth"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_redhu"]
+radius = 12.0416
+
+[node name="Node2D" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["item"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1, 2)
+shape = SubResource("CircleShape2D_redhu")
+
+[node name="PopsicleBv6" type="Sprite2D" parent="StaticBody2D"]
+texture = ExtResource("1_7rjth")
