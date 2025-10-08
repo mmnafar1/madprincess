@@ -1,7 +1,10 @@
 extends Node
-var radius = 6
+var radius = 8
 var tiles = []
-const SPEED := 300.0
+var edge_tiles = []
+const SPEED := 150.0
 const DEADZONE := 0.05  # tiny threshold to prevent jitter at near-zero input
-const MONSTERSPEED := 200.0
+const MONSTERSPEED := 100.0
 const MONSTER_WAIT_TIME = 0.3
+const TILE_COME_BACK = 50
+const REALISTIC_MOVE = true

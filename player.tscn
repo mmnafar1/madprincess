@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bioh23pq4uiaj"]
+[gd_scene load_steps=30 format=3 uid="uid://bioh23pq4uiaj"]
 
 [ext_resource type="Texture2D" uid="uid://rcwjeh3ilp47" path="res://Assets/characters.png" id="1_4flbx"]
 
@@ -26,14 +26,15 @@ var _last_dir_idx := 0  # remember where we were facing when we stop
 
 func _physics_process(delta: float) -> void:
 	var direction := Input.get_vector(\"left\", \"right\", \"up\", \"down\")
-
+	if(Config.REALISTIC_MOVE):
+		direction = direction.rotated(0.08)
 	# --- movement (yours, slightly kept) ---
 	if direction.length() > Config.DEADZONE:
-		velocity = direction * Config.SPEED
+		velocity = direction * Config.SPEED * delta * 80
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, Config.SPEED)
 		velocity.y = move_toward(velocity.y, 0.0, Config.SPEED)
-
+	print((velocity.length()))
 	move_and_slide()
 	_update_animation(direction)
 
@@ -59,7 +60,9 @@ func _play_once(target: String) -> void:
 func _player_ate():
 	chocos += 1
 	print(\"player Has Chocolate: \",chocos)
-
+func _player_gave():
+	chocos = 0
+	print(\"player gave all Chocolates\")
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	print(body)
 	if body.is_in_group('monster'):
@@ -67,6 +70,10 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group('item'):
 		_player_ate()
 		body.get_parent().queue_free()
+	if body.is_in_group('princess'):
+		_player_gave()
+		$\"../..\"._remove_tile()
+		body._got_chocolate()
 "
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i3pqv"]
@@ -347,25 +354,38 @@ animations = [{
 }],
 "loop": true,
 "name": &"Walk_W",
-"speed": 11.0
+"speed": 10.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4flbx"]
-radius = 10.0499
+radius = 6.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4flbx"]
+radius = 1.0
+height = 6.0
 
 [node name="Node2D" type="Node2D"]
+z_index = 200
 
 [node name="Player" type="CharacterBody2D" parent="."]
+collision_layer = 3
+collision_mask = 2
 script = SubResource("GDScript_onrkg")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 sprite_frames = SubResource("SpriteFrames_bwjto")
-animation = &"Idle_W"
+animation = &"Walk_SW"
 
 [node name="Area2D" type="Area2D" parent="Player"]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
 position = Vector2(-1, 2)
 shape = SubResource("CircleShape2D_4flbx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(-1, 9)
+shape = SubResource("CapsuleShape2D_4flbx")
 
 [connection signal="body_entered" from="Player/Area2D" to="Player" method="_on_area_2d_body_entered"]

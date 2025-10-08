@@ -11,13 +11,13 @@ script = ExtResource("1_omndm")
 [node name="s2" type="Sprite2D" parent="Area2D"]
 texture = ExtResource("3_30qxo")
 
-[node name="Line2D" type="Line2D" parent="Area2D/s2"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-102, -18, -13, 18, 89, -4, 103, -58, 16, -94, -87, -71)
+
+[node name="Line2D" type="Line2D" parent="Area2D"]
 visible = false
 points = PackedVector2Array(-97, -19, -83, -68, 14, -89, 97, -57, 84, -8, -11, 15, -100, -22)
 default_color = Color(0.468753, 1, 0.90513, 1)
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
-polygon = PackedVector2Array(-91, -22, -10, 10, 81, -13, 97, -57, 16, -93, -84, -68)
 
 [node name="Label" type="Label" parent="."]
 visible = false
@@ -29,5 +29,3 @@ theme_override_font_sizes/font_size = 40
 text = "asd"
 
 [node name="Timer" type="Timer" parent="."]
-
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

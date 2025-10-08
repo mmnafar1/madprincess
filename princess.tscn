@@ -44,6 +44,9 @@ func _update_animation(mode: String) -> void:
 func _play_once(target: String) -> void:
 	if anim.animation != target:
 		anim.play(target)
+
+func _got_chocolate():
+	pass
 "
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xtddm"]
@@ -81,9 +84,10 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_0pwim"]
 
 [node name="Node2D" type="Node2D"]
+z_index = 200
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-platform_floor_layers = 4294967055
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." groups=["princess"]]
+collision_mask = 0
 script = SubResource("GDScript_mlurr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
@@ -91,4 +95,5 @@ sprite_frames = SubResource("SpriteFrames_mlurr")
 animation = &"Idle_normal"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(0, 6)
 shape = SubResource("CircleShape2D_0pwim")

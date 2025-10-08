@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://epdoewcj07kv"]
+
+[ext_resource type="Script" uid="uid://cr53pjcw5o5lk" path="res://hexa_border_node.gd" id="1_80j4x"]
+[ext_resource type="Texture2D" uid="uid://5734j5x0gh8p" path="res://Assets/2.png" id="3_6lh8s"]
+
+[node name="HexaNode" type="Node2D"]
+script = ExtResource("1_80j4x")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_left = -70.0
+offset_top = -74.0
+offset_right = -2.0
+offset_bottom = -19.0
+theme_override_font_sizes/font_size = 40
+text = "asd"
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CharacterBody2D"]
+top_level = true
+polygon = PackedVector2Array(-102, -18, -13, 18, 89, -4, 103, -58, 16, -94, -87, -71)
+
+[node name="s2" type="Sprite2D" parent="CharacterBody2D"]
+visible = false
+texture = ExtResource("3_6lh8s")
