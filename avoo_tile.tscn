@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://djn7q6jsux4or"]
+
+[ext_resource type="Texture2D" uid="uid://nm6rhnqhcqks" path="res://Assets/Avoo_tile.png" id="1_5lh4x"]
+[ext_resource type="Texture2D" uid="uid://dn8dupigc2sw3" path="res://Assets/avoo_white.png" id="2_xomw1"]
+[ext_resource type="Texture2D" uid="uid://bvpuukkrln6sb" path="res://Assets/avoo_white2.png" id="3_ubhl4"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ubhl4"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="AvooTile" type="Sprite2D" parent="."]
+modulate = Color(0.570242, 0.7152, 0.997576, 1)
+self_modulate = Color(3.65794e-06, 0.467106, 0.577493, 1)
+texture = ExtResource("1_5lh4x")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_left = -307.0
+offset_top = -231.0
+offset_right = -267.0
+offset_bottom = -208.0
+theme_override_font_sizes/font_size = 10
+text = "font"
+
+[node name="AvooWhite" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.285407, 0.000678644, 0.71406, 1)
+texture = ExtResource("2_xomw1")
+
+[node name="AvooWhite2" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.760835, 0.00210543, 0.943328, 1)
+texture = ExtResource("3_ubhl4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ubhl4")

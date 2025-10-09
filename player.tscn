@@ -34,7 +34,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, Config.SPEED)
 		velocity.y = move_toward(velocity.y, 0.0, Config.SPEED)
-	print((velocity.length()))
+	#print((velocity.length()))
 	move_and_slide()
 	_update_animation(direction)
 
@@ -58,22 +58,40 @@ func _play_once(target: String) -> void:
 		anim.play(target)
 
 func _player_ate():
-	chocos += 1
+	chocos = 1
 	print(\"player Has Chocolate: \",chocos)
 func _player_gave():
 	chocos = 0
 	print(\"player gave all Chocolates\")
+func _player_took_damage():
+	print('took damg')
+	modulate = Color.CRIMSON
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.CRIMSON
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.CRIMSON
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	print(body)
 	if body.is_in_group('monster'):
+		if not body.no_run:
+			Config.player_health -= Config.monster_damage
+			_player_took_damage()
 		body._is_killed()
 	if body.is_in_group('item'):
-		_player_ate()
-		body.get_parent().queue_free()
+		if chocos == 0:
+			_player_ate()
+			body.get_parent().queue_free()
 	if body.is_in_group('princess'):
-		_player_gave()
-		$\"../..\"._remove_tile()
-		body._got_chocolate()
+		if(chocos == 1):
+			_player_gave()
+			#$\"../..\"._remove_tile()
+			body._got_chocolate()
 "
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i3pqv"]
@@ -367,14 +385,16 @@ height = 6.0
 [node name="Node2D" type="Node2D"]
 z_index = 200
 
-[node name="Player" type="CharacterBody2D" parent="."]
+[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
 collision_layer = 3
 collision_mask = 2
 script = SubResource("GDScript_onrkg")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 sprite_frames = SubResource("SpriteFrames_bwjto")
-animation = &"Walk_SW"
+animation = &"Walk_NE"
+frame = 1
+frame_progress = 0.134363
 
 [node name="Area2D" type="Area2D" parent="Player"]
 collision_layer = 3

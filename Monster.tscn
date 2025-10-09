@@ -1,11 +1,13 @@
-[gd_scene load_steps=29 format=3 uid="uid://dtyqo124jqlfh"]
+[gd_scene load_steps=34 format=3 uid="uid://dtyqo124jqlfh"]
 
 [ext_resource type="Texture2D" uid="uid://rcwjeh3ilp47" path="res://Assets/characters.png" id="1_vb3nq"]
+[ext_resource type="Texture2D" uid="uid://cuvk4msd2nqam" path="res://Assets/bubble_sheet.png" id="2_ssiii"]
 
 [sub_resource type="GDScript" id="GDScript_vb3nq"]
 script/source = "extends CharacterBody2D
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+@onready var nav_agent = $NavigationAgent2D
 var no_run = false
 # Order corresponds to angle sectors starting at +X (right) going CCW
 var _dir_names := [
@@ -28,19 +30,43 @@ func _ready() -> void:
 	$Timer.timeout.connect(_on_timer_timeout)
 	player = $\"../../Player/Player\"
 	target_position = player.global_position
+	
+	#DEEEZ TEST:
+	#nav_agent.navigation_finished(_on_nav_finished)
+	#nav_agent.velocity_computed(_on_navigation_agent_2d_velocity_computed)
+	nav_agent.target_position = target_position
+	#_make_path()
+func _on_nav_finished():
+	pass
+func _on_navigation_agent_2d_velocity_computed(safe_velocity):
+	velocity = velocity.move_toward(safe_velocity,100)
+	move_and_slide()
+	
+	
+	
 func _on_timer_timeout() -> void:
 	if player:
 		target_position = player.global_position
+	nav_agent.target_position = target_position
 
 func _physics_process(delta: float) -> void:
 	if no_run:
 		return
-	var direction = (target_position - global_position).normalized()
-	velocity = direction * Config.MONSTERSPEED
-	move_and_slide()
-	_update_animation((target_position - global_position).normalized())
+
+	#DEEEZ TEST:
+	var next_path_pos = nav_agent.get_next_path_position()
+	var direction = global_position.direction_to(next_path_pos)
+	var new_velocity = direction * Config.MONSTERSPEED * delta * 80
+	nav_agent.velocity = new_velocity
+	_update_animation(direction)
+	#var direction = (target_position - global_position).normalized()
+	#velocity = direction * Config.MONSTERSPEED * delta * 80
+	#move_and_slide()
+	#_update_animation((target_position - global_position).normalized())
 func _is_killed():
-	$\"..\".queue_free()
+	no_run = true
+	_play_once('bubbled')
+	
 
 
 func _update_animation(direction: Vector2) -> void:
@@ -69,6 +95,12 @@ func _drop(zz):
 		get_parent().position += Vector2(0,10)
 		await get_tree().create_timer(0.1).timeout
 	get_parent().queue_free()
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if(no_run):
+		print('anim tamam --------------------------------')
+		$\"..\".queue_free()
 "
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ssiii"]
@@ -166,6 +198,22 @@ region = Rect2(96, 48, 16, 24)
 [sub_resource type="AtlasTexture" id="AtlasTexture_eaw7o"]
 atlas = ExtResource("1_vb3nq")
 region = Rect2(96, 72, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3qqa"]
+atlas = ExtResource("2_ssiii")
+region = Rect2(384, 0, 24, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4bf2d"]
+atlas = ExtResource("2_ssiii")
+region = Rect2(408, 0, 24, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r42ds"]
+atlas = ExtResource("2_ssiii")
+region = Rect2(432, 0, 24, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fli7b"]
+atlas = ExtResource("2_ssiii")
+region = Rect2(456, 0, 24, 28)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vb3nq"]
 animations = [{
@@ -280,6 +328,23 @@ animations = [{
 "loop": true,
 "name": &"Walk_W",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3qqa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4bf2d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r42ds")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fli7b")
+}],
+"loop": false,
+"name": &"bubbled",
+"speed": 5.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5vc1h"]
@@ -287,14 +352,18 @@ radius = 7.07107
 
 [node name="Node2D" type="Node2D"]
 z_index = 500
+y_sort_enabled = true
 
 [node name="Monster" type="CharacterBody2D" parent="." groups=["monster"]]
+collision_layer = 9
 collision_mask = 0
 script = SubResource("GDScript_vb3nq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Monster"]
 sprite_frames = SubResource("SpriteFrames_vb3nq")
-animation = &"Walk_E"
+animation = &"bubbled"
+frame = 3
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Monster"]
 position = Vector2(0, 6)
@@ -303,3 +372,12 @@ shape = SubResource("CircleShape2D_5vc1h")
 [node name="Area2D" type="Area2D" parent="Monster"]
 
 [node name="Timer" type="Timer" parent="Monster"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Monster"]
+avoidance_enabled = true
+radius = 1.95
+avoidance_layers = 8
+avoidance_mask = 8
+
+[connection signal="animation_finished" from="Monster/AnimatedSprite2D" to="Monster" method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="velocity_computed" from="Monster/NavigationAgent2D" to="Monster" method="_on_navigation_agent_2d_velocity_computed"]

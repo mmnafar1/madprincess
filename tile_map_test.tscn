@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://cvm7mg83uxi1p"]
+
+[ext_resource type="Script" uid="uid://bmox6j50v10m7" path="res://tile_map_test.gd" id="1_bpdkj"]
+[ext_resource type="Texture2D" uid="uid://nm6rhnqhcqks" path="res://Assets/Avoo_tile.png" id="2_eph1u"]
+[ext_resource type="Texture2D" uid="uid://c73cvnb0fokmq" path="res://Assets/backs/360_F_749012021_yYx1gKibP9QtZ9C8zrOxlQNMrRBGaYQ8.jpg" id="3_eph1u"]
+[ext_resource type="Texture2D" uid="uid://buojykbito04p" path="res://Assets/backs/24274-1920x1200-desktop-hd-outer-space-wallpaper-image.jpg" id="4_8qrih"]
+[ext_resource type="Texture2D" uid="uid://dje226n5eiavq" path="res://Assets/backs/pexels-samkolder-2387877.jpg" id="5_2ld1u"]
+[ext_resource type="Texture2D" uid="uid://dhglkxfidlbfs" path="res://Assets/backs/wallpapersden.com_the-space-creature-digital-cool_1920x1215.jpg" id="6_g5r3x"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_bpdkj")
+
+[node name="360F749012021YYx1gKibP9QtZ9c8ZrOxlQnMrRbGaYq8" type="Sprite2D" parent="."]
+position = Vector2(574.75, 318.5)
+scale = Vector2(1.37604, 1.76389)
+texture = ExtResource("3_eph1u")
+
+[node name="AvooTile" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_eph1u")
+
+[node name="AvooTile2" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(1112, -14)
+texture = ExtResource("2_eph1u")
+
+[node name="AvooTile3" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(564, 583)
+texture = ExtResource("2_eph1u")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
+color = Color(0.207843, 0.392157, 1, 1)
+
+[node name="AvooTile4" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(381, 287)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_eph1u")
+
+[node name="24274-1920x1200-desktop-hd-outer-space-wallpaper-image" type="Sprite2D" parent="."]
+position = Vector2(960, 38)
+texture = ExtResource("4_8qrih")
+
+[node name="Pexels-samkolder-2387877" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(817.5, 1057.5)
+scale = Vector2(0.352902, 0.321875)
+texture = ExtResource("5_2ld1u")
+
+[node name="Wallpapersden_comThe-space-creature-digital-cool1920x1215" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(543, 37)
+texture = ExtResource("6_g5r3x")

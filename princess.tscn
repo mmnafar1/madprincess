@@ -36,7 +36,8 @@ func _physics_process(delta: float) -> void:
 #
 	move_and_slide()
 	_update_animation('normal')
-
+func _ready() -> void:
+	anim.play('11')
 func _update_animation(mode: String) -> void:
 	var idle_name = \"Idle_\" + mode
 	_play_once(idle_name)
@@ -46,6 +47,7 @@ func _play_once(target: String) -> void:
 		anim.play(target)
 
 func _got_chocolate():
+	Config.princess_mentality = min(Config.princess_mentality + Config.choco_goodness,100)
 	pass
 "
 
@@ -77,6 +79,23 @@ animations = [{
 "texture": SubResource("AtlasTexture_wholh")
 }],
 "loop": true,
+"name": &"11",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xtddm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y80dd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xtddm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wholh")
+}],
+"loop": true,
 "name": &"Idle_normal",
 "speed": 4.0
 }]
@@ -92,7 +111,7 @@ script = SubResource("GDScript_mlurr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
 sprite_frames = SubResource("SpriteFrames_mlurr")
-animation = &"Idle_normal"
+animation = &"11"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 position = Vector2(0, 6)
