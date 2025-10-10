@@ -28,7 +28,9 @@ func _remove():
 	for i in range(10):
 		await get_tree().create_timer(0.1).timeout
 		$Area2D/s2.position += Vector2(0,10)
+		#modulate -= Color(0,0,0,15)/256
 		if(i==3):
+			modulate -= Color(0,0,0,106)/256
 			stat = 2
 			if(choco != null):
 				choco.queue_free()
@@ -48,7 +50,9 @@ func _come_back():
 		await get_tree().create_timer(0.1).timeout
 		if base_position != $Area2D/s2.position:
 			$Area2D/s2.position -= Vector2(0,10)
-		if(i>8):
+			#modulate += Color(0,0,0,15)/256
+		if(i==7):
+			modulate += Color(0,0,0,106)/256
 			stat = 0
 	Config.remaining_tiles.append(self)
 	#show()
@@ -57,7 +61,9 @@ func _come_back():
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if(stat == 2 and body.is_in_group("monster")):
 		body._drop(z_index)
-	if(stat == 2 and body.is_in_group("player")):
+	elif(stat == 2 and body.is_in_group("player")):
+		if(body.player_fly):
+			return
 		Config.player_health -= Config.drop_damage
 		Config.player.get_child(0)._player_took_damage()
 		_come_back()

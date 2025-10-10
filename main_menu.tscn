@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=4 uid="uid://dcseeo4edb124"]
+[gd_scene load_steps=33 format=4 uid="uid://dcseeo4edb124"]
 
 [ext_resource type="Script" uid="uid://cyx3egm4xdjgy" path="res://texture_rect.gd" id="2_fu7sn"]
 [ext_resource type="Script" uid="uid://dd7x6lvepgnwa" path="res://main_page.gd" id="2_glbon"]
@@ -64,9 +64,15 @@ border_color = Color(7.70092e-07, 0, 0.991547, 1)
 bg_color = Color(0, 0, 0.921569, 1)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ojb7r"]
-vertices = PackedVector2Array(1142, 638, 10, 638, 10, 10, 1142, 10)
+vertices = PackedVector2Array(1912.08, 1072.06, 4.04688, 1083.93, 9.9375, 9.95313, 1920.91, 2.03906)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(0, 0, 1152, 0, 1152, 648, 0, 648)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(0, 0, 1931, -8, 1922, 1082, -6, 1094)])
+
+[sub_resource type="Curve2D" id="Curve2D_ojb7r"]
+_data = {
+"points": PackedVector2Array(496.923, -1.94872, -496.923, 1.94872, 2022, 522, 212.215, 261.732, -212.215, -261.732, 1674, 185, 177.333, -251.385, -177.333, 251.385, 262, 164, 323.487, 208.513, -323.487, -208.513, -163, 444)
+}
+point_count = 4
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j5v2v"]
 texture = ExtResource("7_dy7ct")
@@ -105,6 +111,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 768.0
+offset_bottom = 432.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -346,7 +354,7 @@ script = ExtResource("5_glbon")
 
 [node name="Player" parent="Game" instance=ExtResource("6_nlkkf")]
 z_index = 1000
-position = Vector2(436, 314)
+position = Vector2(577, 378)
 scale = Vector2(2, 2)
 
 [node name="MonsterTimer" type="Timer" parent="Game"]
@@ -438,14 +446,29 @@ offset_right = 1013.0
 offset_bottom = 33.0
 text = "BestScore:132 Sec"
 
-[node name="Moon" type="Sprite2D" parent="Game"]
-modulate = Color(1, 0.964706, 0.964706, 1)
-position = Vector2(1066, 561)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("15_e5qqf")
-
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="Game"]
 navigation_polygon = SubResource("NavigationPolygon_ojb7r")
+
+[node name="Path2D" type="Path2D" parent="Game"]
+position = Vector2(2, 179)
+curve = SubResource("Curve2D_ojb7r")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Game/Path2D"]
+position = Vector2(129.225, 430.63)
+rotation = 2.00365
+progress = 2400.9
+
+[node name="Moon" type="Sprite2D" parent="Game/Path2D/PathFollow2D"]
+modulate = Color(1, 0.964706, 0.964706, 1)
+rotation = 1.74608
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("15_e5qqf")
+
+[node name="MeScore" type="Label" parent="Game"]
+offset_left = 1532.0
+offset_top = 10.0
+offset_right = 1572.0
+offset_bottom = 33.0
 
 [node name="TestMap" type="Node2D" parent="."]
 visible = false

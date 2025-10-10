@@ -1,6 +1,7 @@
-[gd_scene load_steps=30 format=3 uid="uid://bioh23pq4uiaj"]
+[gd_scene load_steps=31 format=3 uid="uid://bioh23pq4uiaj"]
 
 [ext_resource type="Texture2D" uid="uid://rcwjeh3ilp47" path="res://Assets/characters.png" id="1_4flbx"]
+[ext_resource type="Texture2D" uid="uid://b2gbyhi34venn" path="res://Assets/Pngwing-Free-Picture-PNG.png" id="2_onrkg"]
 
 [sub_resource type="GDScript" id="GDScript_onrkg"]
 resource_name = "main_player"
@@ -10,6 +11,7 @@ script/source = "extends CharacterBody2D
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 var chocos = 0
+var player_fly = false
 # Order corresponds to angle sectors starting at +X (right) going CCW
 var _dir_names := [
 	\"E\",
@@ -45,6 +47,22 @@ func _update_animation(direction: Vector2) -> void:
 		if angle < 0.0:
 			angle += TAU
 		var sector := int(roundi(angle / (PI / 4.0))) % 8
+		if(sector <= 4):
+			$Wings.z_index = 1
+		else:
+			$Wings.z_index = -1
+		if sector%2 == 1:
+			$Wings.scale.x = 0.01
+			$Wings.position.x =0.769
+		elif sector%4 == 0:
+			$Wings.scale.x = 0.001
+			if sector ==0:
+				$Wings.position.x =-3.1
+			else:
+				$Wings.position.x =3.1
+		else:
+			$Wings.position.x =0.769
+			$Wings.scale.x = 0.015
 		_last_dir_idx = sector
 		#print(sector)
 		var name = _dir_names[sector]
@@ -59,6 +77,17 @@ func _play_once(target: String) -> void:
 
 func _player_ate():
 	chocos = 1
+	modulate = Color.SANDY_BROWN
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.SANDY_BROWN
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.SANDY_BROWN
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
 	print(\"player Has Chocolate: \",chocos)
 func _player_gave():
 	chocos = 0
@@ -83,11 +112,41 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 			Config.player_health -= Config.monster_damage
 			_player_took_damage()
 		body._is_killed()
-	if body.is_in_group('item'):
-		if chocos == 0:
+	elif body.is_in_group('item'):
+		if body.get_parent().type == 0 and chocos == 0:
 			_player_ate()
 			body.get_parent().queue_free()
-	if body.is_in_group('princess'):
+		elif body.get_parent().type == 1:
+			Config.MONSTERSPEED /=2.0
+			body.get_parent().queue_free()
+			await get_tree().create_timer(5).timeout
+			Config.MONSTERSPEED *=2.0
+			
+		elif body.get_parent().type == 2:
+			Config.player_health = min(100,Config.player_health+20)
+			body.get_parent().queue_free()
+		elif body.get_parent().type == 3:
+			player_fly = true
+			$Wings.show()
+			body.get_parent().queue_free()
+			for i in range(10):
+				#modulate = Color.AQUA
+				await get_tree().create_timer(0.1).timeout
+				#modulate = Color.WHITE
+				await get_tree().create_timer(0.1).timeout
+				#modulate = Color.DARK_MAGENTA
+				await get_tree().create_timer(0.1).timeout
+				#modulate = Color.WHITE
+				await get_tree().create_timer(0.1).timeout
+				#modulate = Color.DARK_ORANGE
+				await get_tree().create_timer(0.1).timeout
+				modulate = Color.WHITE
+			player_fly = false
+			$Wings.hide()
+			
+			
+			
+	elif body.is_in_group('princess'):
 		if(chocos == 1):
 			_player_gave()
 			#$\"../..\"._remove_tile()
@@ -380,12 +439,13 @@ radius = 6.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4flbx"]
 radius = 1.0
-height = 6.0
+height = 4.0
 
 [node name="Node2D" type="Node2D"]
 z_index = 200
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
+scale = Vector2(1.3, 1.3)
 collision_layer = 3
 collision_mask = 2
 script = SubResource("GDScript_onrkg")
@@ -396,6 +456,12 @@ animation = &"Walk_NE"
 frame = 1
 frame_progress = 0.134363
 
+[node name="Wings" type="Sprite2D" parent="Player"]
+visible = false
+position = Vector2(-0.769231, -1.53846)
+scale = Vector2(0.002, 0.015)
+texture = ExtResource("2_onrkg")
+
 [node name="Area2D" type="Area2D" parent="Player"]
 collision_layer = 3
 collision_mask = 3
@@ -405,7 +471,8 @@ position = Vector2(-1, 2)
 shape = SubResource("CircleShape2D_4flbx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-position = Vector2(-1, 9)
+position = Vector2(-0.769231, 6.15385)
+rotation = -1.31598
 shape = SubResource("CapsuleShape2D_4flbx")
 
 [connection signal="body_entered" from="Player/Area2D" to="Player" method="_on_area_2d_body_entered"]

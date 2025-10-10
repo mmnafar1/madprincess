@@ -47,7 +47,19 @@ func _play_once(target: String) -> void:
 		anim.play(target)
 
 func _got_chocolate():
+	Config.me_score += 10
 	Config.princess_mentality = min(Config.princess_mentality + Config.choco_goodness,100)
+	modulate = Color.FOREST_GREEN
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.FOREST_GREEN
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.FOREST_GREEN
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
 	pass
 "
 
@@ -101,6 +113,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0pwim"]
+radius = 13.0
 
 [node name="Node2D" type="Node2D"]
 z_index = 200

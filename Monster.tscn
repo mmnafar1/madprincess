@@ -39,6 +39,8 @@ func _ready() -> void:
 func _on_nav_finished():
 	pass
 func _on_navigation_agent_2d_velocity_computed(safe_velocity):
+	if no_run:
+		return
 	velocity = velocity.move_toward(safe_velocity,100)
 	move_and_slide()
 	

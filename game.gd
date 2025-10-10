@@ -77,7 +77,7 @@ func _monster_come() -> void:
 	_put_a_monster()
 	oo+=1
 	if(oo>4):
-		$MonsterTimer.wait_time = 0.5
+		$MonsterTimer.wait_time = 0.25
 func _put_a_choco():
 	var choco_scene = preload("res://Chocolate.tscn")
 	var new_choco = choco_scene.instantiate()
@@ -99,7 +99,7 @@ func _choco_time() -> void:
 	_put_a_choco()
 var b = true
 func _remove_tile() -> void:
-	$TileRemoval.wait_time = Config.princess_mentality/100*2.5+0.5
+	$TileRemoval.wait_time = Config.princess_mentality/100*2.5+0.45
 	if(Config.remaining_tiles.size()>0):
 		var random_index = randi_range(0, Config.remaining_tiles.size() - 1)
 		if(b == true):
@@ -115,25 +115,25 @@ func _decay_dat_mental() -> void:
 func _add_time():
 	current_time += 1
 	$GameTime.text = "TimeSoFar: "+str(current_time)
-	if(current_time>Config.blood_moon_start):
+	if(current_time%(Config.blood_moon_start+Config.blood_moon_priod)>Config.blood_moon_start):
 		Config.blood_moon=true
-	if(current_time>Config.blood_moon_priod+Config.blood_moon_start):
+	if(current_time%(Config.blood_moon_start+Config.blood_moon_priod)<Config.blood_moon_start):
 		Config.blood_moon=false
 	
 func _ready():
 	Config.player = $Player
 	_put_da_tiles()
 	_put_da_princess()
-	$MonsterTimer.wait_time = 2
+	$MonsterTimer.wait_time = 1
 	$MonsterTimer.start()
 	$MonsterTimer.timeout.connect(_monster_come)
-	$ChocolateTimer.wait_time = 4
+	$ChocolateTimer.wait_time = 6
 	$ChocolateTimer.start()
 	$ChocolateTimer.timeout.connect(_choco_time)
 	$MentalDecayTimer.wait_time = 0.4
 	$MentalDecayTimer.start()
 	$MentalDecayTimer.timeout.connect(_decay_dat_mental)
-	$TileRemoval.wait_time = 1000
+	$TileRemoval.wait_time = 3
 	$TileRemoval.start()
 	$TileRemoval.timeout.connect(_remove_tile)
 	$GameTimeTimer.wait_time = 1
@@ -144,11 +144,17 @@ func _ready():
 
 func _process(delta: float) -> void:
 	if not Config.blood_moon:
-		$Moon.position-=Vector2(0,440)/(Config.blood_moon_start*1.0)*delta
-		if(Config.blood_moon_start-current_time<30):
-			$Moon.modulate -= Color(0,8,8)*delta/256
+		#$Moon.position-=Vector2(0,440)/(Config.blood_moon_start*1.0)*delta
+		$Path2D/PathFollow2D.progress_ratio+=1*delta/(Config.blood_moon_start*1.0)
+		if(Config.blood_moon_start-current_time%(Config.blood_moon_start+Config.blood_moon_priod)<30):
+			$Path2D/PathFollow2D/Moon.modulate -= Color(0,8,8)*delta/256
+		else:
+			$Path2D/PathFollow2D/Moon.modulate = Color.WHITE
+			
 	else:
-		$Moon.rotate(1*delta)
+		$Path2D/PathFollow2D/Moon.rotate(1*delta)
+	if Config.player_health>0:
+		$MeScore.text = "ScoreBe: "+str(Config.me_score)
 	if(Config.player_health<0):
 		print('game_Over')
 	
